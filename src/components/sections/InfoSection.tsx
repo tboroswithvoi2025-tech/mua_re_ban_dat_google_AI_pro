@@ -24,7 +24,7 @@ export default function InfoSection() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="section-title">Vì sao chọn chúng tôi</h2>
-          <p className="section-subtitle">Ba cam kết cốt lõi của NGUỒN HÀNG TỰ CUNG</p>
+          <p className="section-subtitle">Ba cam kết cốt lõi của Mua bán acc Google AI Pro</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">

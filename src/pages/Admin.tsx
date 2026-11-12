@@ -409,7 +409,7 @@ function OrdersTab() {
                   {events.map((e) => (
                     <div key={e.id} className="text-xs text-gray-400 flex items-center gap-2">
                       <span className="text-mystic-400">●</span>
-                      <span>{ORDER_STATUS_LABELS[e.old_status] || 'Tạo'} → {ORDER_STATUS_LABELS[e.new_status]}</span>
+                      <span>{ORDER_STATUS_LABELS[e.old_status ?? ''] || 'Tạo'} → {ORDER_STATUS_LABELS[e.new_status]}</span>
                       <span className="text-gray-600">{formatDate(e.created_at)}</span>
                       {e.note && <span className="text-gray-500">- {e.note}</span>}
                     </div>
@@ -496,9 +496,9 @@ function ProductForm({ product, onClose, onSaved }: { product: Product | null; o
     description: product?.description ?? '',
     warranty_note: product?.warranty_note ?? '',
     warranty_policy: product?.warranty_policy ?? '',
-    badge: product?.badge ?? '',
-    status: product?.status ?? 'active',
-    stock_status: product?.stock_status ?? 'in_stock',
+    badge: product?.badge ?? ('' as string),
+    status: product?.status ?? ('active' as 'active' | 'inactive'),
+    stock_status: product?.stock_status ?? ('in_stock' as 'in_stock' | 'out_of_stock' | 'preorder'),
     image_url: product?.image_url ?? '',
   })
   const [saving, setSaving] = useState(false)
@@ -575,14 +575,14 @@ function ProductForm({ product, onClose, onSaved }: { product: Product | null; o
             </div>
             <div>
               <label className="text-xs text-mystic-300 font-medium mb-1 block">Trạng thái</label>
-              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="input-field text-sm">
+              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as 'active' | 'inactive' })} className="input-field text-sm">
                 <option value="active">Hiện</option>
                 <option value="inactive">Ẩn</option>
               </select>
             </div>
             <div>
               <label className="text-xs text-mystic-300 font-medium mb-1 block">Hàng</label>
-              <select value={form.stock_status} onChange={(e) => setForm({ ...form, stock_status: e.target.value })} className="input-field text-sm">
+              <select value={form.stock_status} onChange={(e) => setForm({ ...form, stock_status: e.target.value as 'in_stock' | 'out_of_stock' | 'preorder' })} className="input-field text-sm">
                 <option value="in_stock">Còn hàng</option>
                 <option value="out_of_stock">Hết hàng</option>
                 <option value="preorder">Đặt trước</option>

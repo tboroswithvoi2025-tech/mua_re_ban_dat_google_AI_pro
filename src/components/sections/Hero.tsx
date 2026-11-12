@@ -40,10 +40,10 @@ export default function Hero() {
 
         {/* Title */}
         <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-white text-glow leading-tight animate-fade-in-up">
-          NGUỒN HÀNG
+          Mua bán acc
           <br />
           <span className="bg-gradient-to-r from-mystic-300 via-gold-300 to-abyss-300 bg-clip-text text-transparent">
-            TỰ CUNG
+            Google AI Pro
           </span>
         </h1>
 

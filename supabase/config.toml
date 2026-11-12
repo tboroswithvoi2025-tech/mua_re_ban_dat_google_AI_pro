@@ -1,0 +1,4 @@
+project_id = "mua-ban-acc-google-ai-pro"
+
+[functions.admin-api]
+verify_jwt = true

@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-6 h-6 text-mystic-400" />
               <div>
-                <div className="font-display font-bold text-white">NGUỒN HÀNG TỰ CUNG</div>
+                <div className="font-display font-bold text-white">Mua bán acc Google AI Pro</div>
                 <div className="font-display text-xs text-mystic-300">Fantasy Digital Marketplace</div>
               </div>
             </div>
@@ -57,7 +57,7 @@ export default function Footer() {
 
         <div className="border-t border-mystic-500/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-gray-500 text-xs">
-            © {new Date().getFullYear()} NGUỒN HÀNG TỰ CUNG. All rights reserved.
+            © {new Date().getFullYear()} Mua bán acc Google AI Pro. All rights reserved.
           </p>
           <p className="text-gray-500 text-xs flex items-center gap-1">
             Made with <Heart className="w-3 h-3 text-mystic-400" /> for digital marketplace

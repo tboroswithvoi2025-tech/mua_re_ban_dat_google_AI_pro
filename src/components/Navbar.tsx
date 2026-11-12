@@ -65,10 +65,10 @@ export default function Navbar() {
             </div>
             <div className="hidden sm:block">
               <div className="font-display font-bold text-base text-white leading-tight tracking-wide">
-                NGUỒN HÀNG
+                Mua bán acc
               </div>
               <div className="font-display text-xs text-mystic-300 leading-tight tracking-wider">
-                TỰ CUNG
+                Google AI Pro
               </div>
             </div>
           </Link>
