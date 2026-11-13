@@ -5,9 +5,10 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
   }
   body {
-    @apply bg-night-900 text-gray-200 font-body antialiased;
+    @apply bg-night-900 text-gray-200 font-body antialiased text-base;
     background: radial-gradient(ellipse at top, #1a1a3e 0%, #0a0a1a 50%, #050510 100%);
     background-attachment: fixed;
     min-height: 100vh;

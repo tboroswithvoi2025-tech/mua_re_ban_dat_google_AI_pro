@@ -31,9 +31,9 @@ export default function ProductSection({ onSelectProduct, onBuyProduct }: Props)
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mystic-500/10 border border-mystic-400/20 mb-4">
             <Package className="w-4 h-4 text-mystic-300" />
-            <span className="text-sm text-mystic-200">Gian hàng</span>
+            <span className="text-sm text-mystic-200">Sản phẩm</span>
           </div>
-          <h2 className="section-title">Các gian hàng sản phẩm</h2>
+          <h2 className="section-title">Danh sách sản phẩm dịch vụ</h2>
           <p className="section-subtitle">Khám phá khu chợ kỹ thuật số phong cách Fantasy</p>
         </div>
 

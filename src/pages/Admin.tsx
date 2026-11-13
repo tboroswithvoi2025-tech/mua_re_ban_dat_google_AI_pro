@@ -318,22 +318,22 @@ function OrdersTab() {
             <div key={order.id} className="glass-card rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-white text-sm font-medium">{order.product_name_snapshot}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${ORDER_STATUS_COLORS[order.order_status]}`}>
+                  <span className="text-white text-base font-bold">{order.product_name_snapshot}</span>
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold ${ORDER_STATUS_COLORS[order.order_status]}`}>
                     {ORDER_STATUS_LABELS[order.order_status]}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-3 text-xs text-gray-500">
-                  <span className="font-mono">{order.order_code}</span>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-300">
+                  <span className="font-mono text-gold-300 font-bold">#{order.order_code}</span>
                   <span>Mã KH: {order.customer_code}</span>
                   <span>{formatDate(order.created_at)}</span>
-                  {order.target_email && <span>Gmail: {order.target_email}</span>}
+                  {order.target_email && <span className="text-white font-medium">Gmail: {order.target_email}</span>}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="text-gold-300 font-bold text-sm">{formatVND(order.total_amount)}</div>
-                <button onClick={() => selectOrder(order)} className="btn-outline px-3 py-1.5 text-xs">
-                  <Eye className="w-3.5 h-3.5" /> Chi tiết
+              <div className="flex items-center gap-3">
+                <div className="text-gold-300 font-bold text-base sm:text-lg">{formatVND(order.total_amount)}</div>
+                <button onClick={() => selectOrder(order)} className="btn-outline px-3.5 py-2 text-sm font-semibold">
+                  <Eye className="w-4 h-4" /> Chi tiết
                 </button>
               </div>
             </div>
@@ -350,53 +350,69 @@ function OrdersTab() {
               <button onClick={() => setSelected(null)}><X className="w-5 h-5 text-gray-400" /></button>
             </div>
             <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><div className="text-xs text-mystic-300">Mã đơn hàng</div><div className="text-white font-mono">{selected.order_code}</div></div>
-                <div><div className="text-xs text-mystic-300">Mã khách hàng</div><div className="text-white font-mono">{selected.customer_code}</div></div>
-                <div className="col-span-2"><div className="text-xs text-mystic-300">Sản phẩm</div><div className="text-white">{selected.product_name_snapshot}</div></div>
-                <div><div className="text-xs text-mystic-300">Giá</div><div className="text-gold-300 font-bold">{formatVND(selected.total_amount)}</div></div>
-                <div><div className="text-xs text-mystic-300">Trạng thái</div><span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${ORDER_STATUS_COLORS[selected.order_status]}`}>{ORDER_STATUS_LABELS[selected.order_status]}</span></div>
-                {selected.target_email && <div className="col-span-2"><div className="text-xs text-mystic-300">Gmail nhận dịch vụ</div><div className="text-white">{selected.target_email}</div></div>}
-                <div><div className="text-xs text-mystic-300">Hình thức nhận</div><div className="text-white">{selected.delivery_mode}</div></div>
-                <div><div className="text-xs text-mystic-300">Ngày đặt</div><div className="text-white">{formatDate(selected.created_at)}</div></div>
-                {selected.customer_note && <div className="col-span-2"><div className="text-xs text-mystic-300">Ghi chú khách</div><div className="text-gray-300">{selected.customer_note}</div></div>}
+              <div className="grid grid-cols-2 gap-4 text-base">
+                <div><div className="text-sm font-semibold text-mystic-300">Mã đơn hàng</div><div className="text-gold-300 font-mono font-bold text-lg">{selected.order_code}</div></div>
+                <div><div className="text-sm font-semibold text-mystic-300">Mã khách hàng</div><div className="text-white font-mono text-base">{selected.customer_code}</div></div>
+                <div className="col-span-2"><div className="text-sm font-semibold text-mystic-300">Sản phẩm</div><div className="text-white font-bold text-lg">{selected.product_name_snapshot}</div></div>
+                <div><div className="text-sm font-semibold text-mystic-300">Tổng tiền</div><div className="text-gold-300 font-bold text-xl">{formatVND(selected.total_amount)}</div></div>
+                <div><div className="text-sm font-semibold text-mystic-300">Trạng thái</div><span className={`text-xs sm:text-sm px-3 py-1 rounded-full border font-bold ${ORDER_STATUS_COLORS[selected.order_status]}`}>{ORDER_STATUS_LABELS[selected.order_status]}</span></div>
+                {selected.target_email && (
+                  <div className="col-span-2 glass-card p-3 bg-night-950/80 rounded-xl border border-mystic-500/30">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-semibold text-mystic-300">Gmail cần nâng cấp tài khoản:</div>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(selected.target_email || '')
+                          alert('Đã sao chép danh sách Gmail!')
+                        }}
+                        className="text-xs bg-mystic-500/20 text-mystic-200 px-2.5 py-1 rounded hover:bg-mystic-500/30"
+                      >
+                        Sao chép Gmail
+                      </button>
+                    </div>
+                    <div className="text-white font-mono font-bold text-base mt-1 select-all">{selected.target_email}</div>
+                  </div>
+                )}
+                <div><div className="text-sm font-semibold text-mystic-300">Hình thức nhận</div><div className="text-white text-base">{selected.delivery_mode}</div></div>
+                <div><div className="text-sm font-semibold text-mystic-300">Ngày đặt</div><div className="text-white text-base">{formatDate(selected.created_at)}</div></div>
+                {selected.customer_note && <div className="col-span-2"><div className="text-sm font-semibold text-mystic-300">Ghi chú khách</div><div className="text-gray-200 text-base">{selected.customer_note}</div></div>}
               </div>
 
               {/* Note input */}
               <div>
-                <label className="text-xs text-mystic-300 font-medium mb-1 block">Ghi chú Admin</label>
-                <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Ghi chú cho thao tác..." className="input-field" />
+                <label className="text-sm text-mystic-300 font-semibold mb-1 block">Ghi chú Admin</label>
+                <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Ghi chú cho thao tác..." className="input-field text-base" />
               </div>
 
               {/* Actions */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5 pt-2">
                 {(selected.order_status === 'CUSTOMER_REPORTED_PAID' || selected.order_status === 'PENDING_PAYMENT') && (
                   <>
-                    <button onClick={() => doAction('verify', selected.id)} disabled={actionLoading} className="btn-gold text-xs px-3 py-2">
+                    <button onClick={() => doAction('verify', selected.id)} disabled={actionLoading} className="btn-gold text-sm px-4 py-2.5 font-bold">
                       <Check className="w-4 h-4" /> Xác nhận đã nhận tiền
                     </button>
-                    <button onClick={() => doAction('reject', selected.id)} disabled={actionLoading} className="btn-outline text-xs px-3 py-2 border-red-500/30 text-red-300">
+                    <button onClick={() => doAction('reject', selected.id)} disabled={actionLoading} className="btn-outline text-sm px-4 py-2.5 border-red-500/40 text-red-300 font-semibold">
                       <X className="w-4 h-4" /> Từ chối / Cần kiểm tra
                     </button>
                   </>
                 )}
                 {selected.order_status === 'PAYMENT_VERIFIED' && (
-                  <button onClick={() => doAction('process', selected.id)} disabled={actionLoading} className="btn-primary text-xs px-3 py-2">
-                    <PlayCircle className="w-4 h-4" /> Bắt đầu xử lý
+                  <button onClick={() => doAction('process', selected.id)} disabled={actionLoading} className="btn-primary text-sm px-4 py-2.5 font-bold">
+                    <PlayCircle className="w-4 h-4" /> Bắt đầu xử lý nâng tài khoản
                   </button>
                 )}
                 {selected.order_status === 'PROCESSING' && (
-                  <button onClick={() => doAction('complete', selected.id)} disabled={actionLoading} className="btn-gold text-xs px-3 py-2">
+                  <button onClick={() => doAction('complete', selected.id)} disabled={actionLoading} className="btn-gold text-sm px-4 py-2.5 font-bold">
                     <CheckCircle2 className="w-4 h-4" /> Đã hoàn tất đơn hàng
                   </button>
                 )}
                 {selected.order_status !== 'CANCELLED' && selected.order_status !== 'COMPLETED' && selected.order_status !== 'REFUNDED' && (
-                  <button onClick={() => doAction('cancel', selected.id)} disabled={actionLoading} className="btn-outline text-xs px-3 py-2 border-red-500/30 text-red-300">
+                  <button onClick={() => doAction('cancel', selected.id)} disabled={actionLoading} className="btn-outline text-sm px-4 py-2.5 border-red-500/40 text-red-300 font-semibold">
                     <XCircle className="w-4 h-4" /> Hủy đơn
                   </button>
                 )}
                 {selected.order_status === 'PAYMENT_VERIFIED' || selected.order_status === 'PROCESSING' ? (
-                  <button onClick={() => doAction('refund', selected.id)} disabled={actionLoading} className="btn-outline text-xs px-3 py-2 border-orange-500/30 text-orange-300">
+                  <button onClick={() => doAction('refund', selected.id)} disabled={actionLoading} className="btn-outline text-sm px-4 py-2.5 border-orange-500/40 text-orange-300 font-semibold">
                     <DollarSign className="w-4 h-4" /> Hoàn tiền
                   </button>
                 ) : null}
@@ -682,26 +698,56 @@ function BankTab() {
 
   useEffect(() => { fetch() }, [])
 
-  if (loading) return <div className="text-mystic-300 animate-pulse">Đang tải...</div>
+  if (loading) return <div className="text-mystic-300 animate-pulse text-base">Đang tải...</div>
 
   return (
-    <div className="space-y-4">
-      <p className="text-xs text-amber-300/70 flex items-center gap-2">
-        <AlertCircle className="w-4 h-4" />
-        Chỉnh sửa ngân hàng cần edge function với service_role. Hiển thị dữ liệu hiện tại:
-      </p>
+    <div className="space-y-6">
+      {/* Tài khoản Eximbank chính thức theo yêu cầu */}
+      <div className="glass-card rounded-2xl p-6 border-2 border-gold-400/40 bg-night-950/70 space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gold-500/20 border border-gold-400/30 flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-gold-400" />
+            </div>
+            <div>
+              <span className="font-display font-bold text-white text-xl">Eximbank</span>
+              <p className="text-sm text-gold-300 font-semibold">Tài khoản thanh toán chính thức trên website</p>
+            </div>
+          </div>
+          <span className="text-sm font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+            Đang hoạt động
+          </span>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4 text-base pt-2 border-t border-mystic-500/15">
+          <div className="glass-card p-3.5 bg-night-900/60 rounded-xl">
+            <div className="text-sm text-gray-400">Số tài khoản nhận tiền:</div>
+            <div className="text-2xl font-mono font-bold text-gold-300">0357722698</div>
+          </div>
+          <div className="glass-card p-3.5 bg-night-900/60 rounded-xl">
+            <div className="text-sm text-gray-400">Chủ tài khoản:</div>
+            <div className="text-xl font-bold text-white">HOANG JAMES</div>
+          </div>
+        </div>
+
+        <div className="text-sm text-gray-300">
+          Cú pháp khách chuyển tiền: <strong className="text-gold-300 font-mono">mã_đơn_chuyentien</strong> (Ví dụ: <span className="font-mono text-white">0128192_chuyentien</span>).
+        </div>
+      </div>
+
       <div className="space-y-3">
+        <h4 className="text-base font-bold text-white">Các tài khoản phụ khác trong Database:</h4>
         {methods.map((m) => (
-          <div key={m.id} className="glass-card rounded-xl p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-display font-bold text-white">{m.bank_name}</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full ${m.is_active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'}`}>
+          <div key={m.id} className="glass-card rounded-xl p-5 border border-mystic-500/20">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-display font-bold text-white text-lg">{m.bank_name}</span>
+              <span className={`text-sm px-3 py-1 rounded-full font-semibold ${m.is_active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'}`}>
                 {m.is_active ? 'Đang sử dụng' : 'Tắt'}
               </span>
             </div>
-            <div className="text-sm space-y-1">
-              <div className="text-gray-400">STK: <span className="text-white font-mono">{m.account_number}</span></div>
-              <div className="text-gray-400">Chủ TK: <span className="text-white">{m.account_holder}</span></div>
+            <div className="text-base space-y-1 text-gray-300">
+              <div>STK: <span className="text-white font-mono font-bold">{m.account_number}</span></div>
+              <div>Chủ TK: <span className="text-white">{m.account_holder}</span></div>
             </div>
           </div>
         ))}

@@ -1,25 +1,53 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Package, LogIn, User } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Package, Search, ArrowRight, CreditCard, Clock, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import type { Order, OrderStatus } from '@/types'
 import { formatVND, formatDate, ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '@/lib/utils'
 
 const STATUS_FILTERS: { value: string; label: string }[] = [
-  { value: 'ALL', label: 'Tất cả' },
+  { value: 'ALL', label: 'Tất cả đơn hàng' },
   { value: 'PENDING_PAYMENT', label: 'Chờ thanh toán' },
-  { value: 'CUSTOMER_REPORTED_PAID', label: 'Đã báo chuyển khoản' },
+  { value: 'CUSTOMER_REPORTED_PAID', label: 'Đã báo chuyển tiền' },
   { value: 'PAYMENT_VERIFIED', label: 'Đã thanh toán' },
-  { value: 'PROCESSING', label: 'Đang xử lý' },
+  { value: 'PROCESSING', label: 'Đang xử lý nâng acc' },
   { value: 'COMPLETED', label: 'Hoàn thành' },
   { value: 'CANCELLED', label: 'Đã hủy' },
 ]
 
 export default function Orders() {
-  const { user, loading, signInWithGoogle } = useAuth()
+  const { user, loading } = useAuth()
+  const navigate = useNavigate()
   const [orders, setOrders] = useState<Order[]>([])
   const [filter, setFilter] = useState('ALL')
+  const [searchCode, setSearchCode] = useState('')
+  const [searchError, setSearchError] = useState('')
+  const [searching, setSearching] = useState(false)
+
+  const handleSearchOrder = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSearchError('')
+    const cleanCode = searchCode.trim().replace(/^#/, '')
+    if (!cleanCode) {
+      setSearchError('Vui lòng nhập mã đơn hàng 7 chữ số.')
+      return
+    }
+
+    setSearching(true)
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('order_code', cleanCode)
+      .maybeSingle()
+
+    setSearching(false)
+    if (error || !data) {
+      setSearchError('Không tìm thấy đơn hàng với mã này. Vui lòng kiểm tra lại.')
+    } else {
+      navigate(`/payment/${data.order_code}`)
+    }
+  }
 
   useEffect(() => {
     if (!user) return
@@ -38,78 +66,135 @@ export default function Orders() {
   }, [user, filter])
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center pt-20"><div className="text-mystic-300 animate-pulse">Đang tải...</div></div>
-  }
-
-  if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-20 px-4">
-        <div className="glass-card rounded-2xl p-8 max-w-md text-center">
-          <User className="w-12 h-12 text-mystic-400 mx-auto mb-4" />
-          <h2 className="font-display text-xl font-bold text-white mb-2">Vui lòng đăng nhập</h2>
-          <p className="text-gray-400 text-sm mb-6">Đăng nhập bằng Google để xem đơn hàng</p>
-          <button onClick={signInWithGoogle} className="btn-primary w-full">
-            <LogIn className="w-5 h-5" /> Đăng nhập Google
-          </button>
-        </div>
+      <div className="min-h-screen flex items-center justify-center pt-24">
+        <div className="text-mystic-300 font-bold text-lg animate-pulse">Đang tải danh sách đơn hàng...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="font-display text-3xl font-bold text-white mb-6">Lịch sử đơn hàng</h1>
-
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {STATUS_FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setFilter(f.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                filter === f.value
-                  ? 'bg-mystic-500/30 text-mystic-200 border border-mystic-400/40'
-                  : 'bg-night-800/40 text-gray-400 border border-transparent hover:bg-white/5'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+    <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto space-y-8">
+        <div>
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-white text-glow mb-2">Tra Cứu Đơn Hàng</h1>
+          <p className="text-base text-gray-300">Nhập mã đơn 7 chữ số để kiểm tra tiến độ kích hoạt hoặc thanh toán đơn hàng</p>
         </div>
 
-        {orders.length === 0 ? (
-          <div className="glass-card rounded-2xl p-12 text-center">
-            <Package className="w-12 h-12 text-mystic-500/30 mx-auto mb-4" />
-            <p className="text-gray-500 text-sm mb-4">Chưa có đơn hàng nào trong mục này</p>
-            <Link to="/" className="btn-outline text-sm">Khám phá cửa hàng</Link>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {orders.map((order) => (
-              <div key={order.id} className="glass-card rounded-2xl p-4 sm:p-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-white font-medium text-sm">{order.product_name_snapshot}</span>
-                    </div>
-                    <div className="text-xs text-gray-500 font-mono mb-2">{order.order_code}</div>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400">
-                      <span>{formatDate(order.created_at)}</span>
-                      {order.target_email && <span>Gmail: {order.target_email}</span>}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2">
-                    <div className="font-display font-bold text-gold-300">{formatVND(order.total_amount)}</div>
-                    <span className={`text-[10px] px-2.5 py-1 rounded-full border font-medium ${ORDER_STATUS_COLORS[order.order_status]}`}>
-                      {ORDER_STATUS_LABELS[order.order_status]}
-                    </span>
-                  </div>
-                </div>
+        {/* Ô TÌM KIẾM THEO MÃ ĐƠN HÀNG */}
+        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-mystic-500/30 bg-night-900/60 shadow-xl">
+          <form onSubmit={handleSearchOrder} className="space-y-3">
+            <label className="text-base font-bold text-white block">Tra cứu nhanh bằng Mã đơn hàng:</label>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                value={searchCode}
+                onChange={(e) => setSearchCode(e.target.value)}
+                placeholder="Nhập mã 7 chữ số (ví dụ: 0128192)..."
+                className="input-field text-base sm:text-lg font-mono flex-1"
+              />
+              <button
+                type="submit"
+                disabled={searching}
+                className="btn-primary text-base px-6 py-3 font-bold flex items-center justify-center gap-2 flex-shrink-0"
+              >
+                <Search className="w-5 h-5" />
+                <span>{searching ? 'Đang tìm...' : 'Tra cứu đơn'}</span>
+              </button>
+            </div>
+            {searchError && (
+              <div className="flex items-center gap-2 text-red-300 text-sm pt-1">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{searchError}</span>
               </div>
-            ))}
+            )}
+          </form>
+        </div>
+
+        {/* DANH SÁCH ĐƠN HÀNG NẾU CÓ PHIÊN HOẶC ĐÃ ĐẶT */}
+        {orders.length > 0 ? (
+          <div className="space-y-4">
+            <h2 className="font-display text-xl font-bold text-white">Đơn hàng vừa đặt trên trình duyệt này:</h2>
+
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2.5">
+              {STATUS_FILTERS.map((f) => (
+                <button
+                  key={f.value}
+                  onClick={() => setFilter(f.value)}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                    filter === f.value
+                      ? 'bg-mystic-600 text-white shadow-lg'
+                      : 'glass-card text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              {orders.map((order) => {
+                const isPending = order.order_status === 'PENDING_PAYMENT' || order.order_status === 'CUSTOMER_REPORTED_PAID'
+
+                return (
+                  <div
+                    key={order.id}
+                    className="glass-card glass-card-hover rounded-2xl p-6 border border-mystic-500/20 space-y-4"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-mystic-500/15">
+                      <div>
+                        <div className="text-xs text-gray-400">Mã đơn hàng:</div>
+                        <div className="font-mono text-xl font-bold text-gold-300">#{order.order_code}</div>
+                        <div className="text-xs text-gray-400 mt-1">{formatDate(order.created_at)}</div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`text-sm font-bold px-3 py-1 rounded-full border inline-flex items-center gap-1.5 ${
+                            ORDER_STATUS_COLORS[order.order_status]
+                          }`}
+                        >
+                          <Clock className="w-4 h-4" />
+                          {ORDER_STATUS_LABELS[order.order_status]}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <div className="font-display font-bold text-white text-base">{order.product_name_snapshot}</div>
+                        {order.delivery_mode && (
+                          <div className="text-sm text-gray-300 mt-1">Hình thức: {order.delivery_mode}</div>
+                        )}
+                        {order.target_email && (
+                          <div className="text-sm text-mystic-300 mt-1">Gmail: {order.target_email}</div>
+                        )}
+                      </div>
+
+                      <div className="sm:text-right">
+                        <div className="text-xs text-gray-400">Tổng thanh toán</div>
+                        <div className="font-display text-2xl font-bold text-gold-300">
+                          {formatVND(order.total_amount)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 flex justify-end">
+                      <Link
+                        to={`/payment/${order.order_code}`}
+                        className="btn-outline px-4 py-2 text-sm font-bold inline-flex items-center gap-2"
+                      >
+                        <CreditCard className="w-4 h-4" />
+                        <span>{isPending ? 'Trang thanh toán' : 'Xem chi tiết đơn'}</span>
+                      </Link>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )
