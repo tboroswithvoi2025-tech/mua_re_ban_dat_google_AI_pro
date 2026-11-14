@@ -1,4 +1,4 @@
-import { Sparkles, ArrowRight, ShoppingBag } from 'lucide-react'
+import { Sparkles, ArrowRight, ShoppingBag, Boxes, BadgeDollarSign, Headphones } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const HERO_BG = 'https://images.pexels.com/photos/11814657/pexels-photo-11814657.jpeg?auto=compress&cs=tinysrgb&w=1600'
@@ -28,16 +28,16 @@ export default function Hero() {
         <div className="w-full h-full bg-gradient-to-br from-abyss-300 to-abyss-500 rounded-full blur-sm" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center py-12">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-10">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-mystic-500/15 border border-mystic-400/30 mb-8 animate-fade-in">
+        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-mystic-500/15 border border-mystic-400/30 mb-6 animate-fade-in">
           <Sparkles className="w-5 h-5 text-gold-400" />
           <span className="text-sm sm:text-base text-mystic-200 font-bold uppercase tracking-wider">
             Fantasy Digital Marketplace
           </span>
         </div>
 
-        {/* Title */}
+        {/* Title - Phần chữ to nhất */}
         <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-white text-glow leading-tight animate-fade-in-up">
           Mua bán
           <br />
@@ -46,26 +46,48 @@ export default function Hero() {
           </span>
         </h1>
 
-        {/* Headline */}
-        <p
-          className="mt-6 text-xl sm:text-2xl md:text-3xl font-display font-bold text-gold-200 text-glow-gold animate-fade-in-up"
-          style={{ animationDelay: '0.1s' }}
-        >
-          KHAI MỞ THẾ GIỚI CÔNG NGHỆ – TỐI ƯU CHI PHÍ
-        </p>
-
-        {/* Subtitle */}
-        <p
-          className="mt-6 text-base sm:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
-          style={{ animationDelay: '0.2s' }}
-        >
-          Khu chợ kỹ thuật số chuyên cung cấp tài khoản Google AI Pro, CapCut Pro và Canva Pro bản quyền với mức giá tối ưu nhất. Nguồn hàng chủ động, kích hoạt tự động và bảo hành trách nhiệm.
-        </p>
-
-        {/* Button */}
+        {/* 3 Cam kết từ Ảnh 1 (thay thế hoàn toàn phần chữ khai mở thế giới công nghệ... bảo hành trách nhiệm) */}
         <div
-          className="mt-10 flex justify-center animate-fade-in-up"
-          style={{ animationDelay: '0.3s' }}
+          className="mt-8 glass-card p-6 sm:p-8 rounded-3xl border border-mystic-500/25 bg-night-900/70 shadow-2xl animate-fade-in-up"
+          style={{ animationDelay: '0.15s' }}
+        >
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-mystic-500/20">
+            <div className="space-y-2 pt-3 md:pt-0">
+              <Boxes className="w-10 h-10 text-mystic-400 mx-auto" />
+              <h3 className="font-display text-lg font-bold text-white uppercase tracking-wide">
+                Nguồn Hàng Chủ Động
+              </h3>
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Không qua trung gian, tài khoản ổn định tuyệt đối và kích hoạt nhanh.
+              </p>
+            </div>
+
+            <div className="space-y-2 pt-5 md:pt-0 md:px-5">
+              <BadgeDollarSign className="w-10 h-10 text-gold-400 mx-auto" />
+              <h3 className="font-display text-lg font-bold text-white uppercase tracking-wide">
+                Giá Siêu Ưu Đãi
+              </h3>
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Tối ưu chi phí cho anh em trải nghiệm Google AI Pro và phần mềm đỉnh cao.
+              </p>
+            </div>
+
+            <div className="space-y-2 pt-5 md:pt-0 md:pl-5">
+              <Headphones className="w-10 h-10 text-abyss-400 mx-auto" />
+              <h3 className="font-display text-lg font-bold text-white uppercase tracking-wide">
+                Hỗ Trợ 2 Founders 24/7
+              </h3>
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Kênh Zalo và Facebook trực tiếp, có mặt ngay khi bạn cần hỗ trợ kỹ thuật.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Khung nút KHÁM PHÁ SẢN PHẨM NGAY (giữ nguyên bên dưới 3 cam kết) */}
+        <div
+          className="mt-8 flex justify-center animate-fade-in-up"
+          style={{ animationDelay: '0.25s' }}
         >
           <Link
             to="/products"

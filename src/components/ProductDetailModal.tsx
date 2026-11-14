@@ -73,6 +73,16 @@ export default function ProductDetailModal({ product, onClose }: Props) {
           >
             <X className="w-6 h-6" />
           </button>
+
+          {/* Thời hạn sử dụng trực tiếp trên ảnh */}
+          {product.duration && (
+            <div className="absolute bottom-4 right-4">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-night-950/85 backdrop-blur-md border border-gold-400/50 text-gold-300 font-extrabold text-sm shadow-xl">
+                <Clock className="w-4 h-4 text-gold-400" />
+                <span>Thời hạn: {product.duration}</span>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content */}

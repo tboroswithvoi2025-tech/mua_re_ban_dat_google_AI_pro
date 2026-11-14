@@ -205,6 +205,16 @@ export default function Products({ onSelectProduct }: Props) {
                           {STOCK_LABELS[product.stock_status]}
                         </span>
                       </div>
+
+                      {/* Thời hạn sử dụng trực tiếp trên ảnh */}
+                      {product.duration && (
+                        <div className="absolute bottom-3 right-3">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-night-950/85 backdrop-blur-md border border-gold-400/50 text-gold-300 font-extrabold text-xs sm:text-sm shadow-xl">
+                            <Clock className="w-3.5 h-3.5 text-gold-400" />
+                            <span>{product.duration}</span>
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Content */}

@@ -6,11 +6,6 @@ import {
   Facebook,
   ExternalLink,
   Building2,
-  Boxes,
-  BadgeDollarSign,
-  Headphones,
-  ShoppingBag,
-  ArrowRight,
 } from 'lucide-react'
 import Hero from '@/components/sections/Hero'
 import { FOUNDERS, DEFAULT_BANK } from '@/lib/utils'
@@ -18,44 +13,10 @@ import { FOUNDERS, DEFAULT_BANK } from '@/lib/utils'
 export default function Home() {
   return (
     <main className="space-y-16 pb-16">
-      {/* 1. Hero Section - Giới thiệu dịch vụ */}
+      {/* 1. Hero Section - Tiêu đề to nhất + 3 cam kết ở giữa + Nút khám phá sản phẩm */}
       <Hero />
 
-      {/* 2. Ba cam kết dịch vụ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-card p-8 rounded-3xl border border-mystic-500/25 bg-night-900/60 shadow-xl">
-          <div className="grid md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-mystic-500/20">
-            <div className="space-y-3 pt-4 md:pt-0">
-              <Boxes className="w-10 h-10 text-mystic-400 mx-auto" />
-              <h3 className="font-display text-xl font-bold text-white">Nguồn Hàng Chủ Động</h3>
-              <p className="text-sm text-gray-300">Không qua trung gian, tài khoản ổn định tuyệt đối và kích hoạt nhanh.</p>
-            </div>
-            <div className="space-y-3 pt-6 md:pt-0 md:px-6">
-              <BadgeDollarSign className="w-10 h-10 text-gold-400 mx-auto" />
-              <h3 className="font-display text-xl font-bold text-white">Giá Siêu Ưu Đãi</h3>
-              <p className="text-sm text-gray-300">Tối ưu chi phí cho anh em trải nghiệm Google AI Pro và phần mềm đỉnh cao.</p>
-            </div>
-            <div className="space-y-3 pt-6 md:pt-0 md:pl-6">
-              <Headphones className="w-10 h-10 text-abyss-400 mx-auto" />
-              <h3 className="font-display text-xl font-bold text-white">Hỗ Trợ 2 Founders 24/7</h3>
-              <p className="text-sm text-gray-300">Kênh Zalo và Facebook trực tiếp, có mặt ngay khi bạn cần hỗ trợ kỹ thuật.</p>
-            </div>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-mystic-500/20 text-center">
-            <Link
-              to="/products"
-              className="btn-primary inline-flex items-center gap-2 px-6 py-3 text-base font-bold"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              <span>Xem danh sách sản phẩm ngay</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. THÔNG TIN LIÊN HỆ 2 FOUNDERS Ở CUỐI TRANG CHỦ */}
+      {/* 2. THÔNG TIN LIÊN HỆ 2 FOUNDERS Ở CUỐI TRANG CHỦ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="glass-card p-8 sm:p-10 rounded-3xl border-2 border-gold-500/30 bg-night-900/80 space-y-8 shadow-2xl">
           <div className="text-center max-w-2xl mx-auto space-y-2">
